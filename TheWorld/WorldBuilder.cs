@@ -116,6 +116,7 @@ namespace TheWorld
 				Description = "A zone of ... danger?"
 			};
 
+            // Added a Giant Bat enemy to this area.
 			myZoneStart.AddCreature(new Creature()
 			    {
 				    Name = "Bat-zilla",
@@ -133,6 +134,9 @@ namespace TheWorld
                 "bat"
             );
 
+
+            // Using this SurpriseBox is ... very surprising............
+            // Requires the USE command be implemented!
 			myZoneStart.AddItem(new SurpriseBox()
 			    {
 				    Name = "Ornate Jewelry Box",
