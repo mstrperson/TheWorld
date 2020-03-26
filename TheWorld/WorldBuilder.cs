@@ -102,6 +102,49 @@ namespace TheWorld
 			// Go back to the Main method and tell it where to start the game!
 			return start;
 		}
+
+
+        /// <summary>
+        /// My contribution to the World for an Easy Achievement!
+        /// </summary>
+        /// <returns></returns>
+        public static Area SpecialZone()
+        {
+			Area myZoneStart = new Area()
+			{
+				Name = "Danger Zone",
+				Description = "A zone of ... danger?"
+			};
+
+			myZoneStart.AddCreature(new Creature()
+			    {
+				    Name = "Bat-zilla",
+				    Description = "Pretty sure I'm going to die....",
+				    Stats = new StatChart()
+				    {
+					    Atk = new Dice("2d12+6"),
+					    Def = new Dice("2d8+3"),
+					    Exp = 150000,
+					    Level = 35,
+					    HPs = 400,
+					    MaxHPs = 400
+				    }
+			    },
+                "bat"
+            );
+
+			myZoneStart.AddItem(new SurpriseBox()
+			    {
+				    Name = "Ornate Jewelry Box",
+				    Description = "An Ornate Silver-inlayed Walnut Jewelry box.  Should I open ('use') it?",
+				    Value = new Money("250g")
+			    },
+                "jewelry_box"
+            );
+
+			return myZoneStart;
+        }
+
 	}
 }
 
