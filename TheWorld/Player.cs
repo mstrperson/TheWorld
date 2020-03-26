@@ -57,7 +57,7 @@ namespace TheWorld
         /// void Remove(string uid)
         /// void Use(
 		/// </summary>
-		public Dictionary<string, List<ICarryableItem>> Backpack;
+		private Dictionary<string, List<ICarryableItem>> Backpack;
 
 
 		public Player(string name)
