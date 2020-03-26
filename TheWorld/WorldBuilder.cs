@@ -99,6 +99,7 @@ namespace TheWorld
 			// and no way out!!!
 			start.AddNeighbor(stream, "north");
 			stream.AddNeighbor(start, "south");
+			stream.AddNeighbor(SpecialZone(ref start, "cliff"), "climb_up");
 
 			// Go back to the Main method and tell it where to start the game!
 			return start;
@@ -109,7 +110,7 @@ namespace TheWorld
         /// My contribution to the World for an Easy Achievement!
         /// </summary>
         /// <returns></returns>
-        public static Area SpecialZone()
+        public static Area SpecialZone(ref Area connectionPoint, string neighborName)
         {
 			Area myZoneStart = new Area()
 			{
@@ -159,6 +160,8 @@ namespace TheWorld
 			    },
                 "jewelry_box"
             );
+
+			connectionPoint.AddNeighbor(myZoneStart, neighborName);
 
 			return myZoneStart;
         }

@@ -112,6 +112,16 @@ namespace TheWorld
     /// </summary>
     public class HealingPotion : Item, ICarryableItem, IUseableItem
     {
+        public static HealingPotion StandardHealingPotion => new HealingPotion()
+        {
+            Name = "Small Healing Potion",
+            Description = "Potion heals you by a small ammount",
+            HealValue = 10,
+            UseCount = 3,
+            Weight = 1,
+            Value = new Money("10c")
+        };
+
         /// <summary>
         /// How much does this thing weigh?
         /// What does that even mean?
