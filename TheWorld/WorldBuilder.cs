@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TheWorld
 {
@@ -134,6 +135,19 @@ namespace TheWorld
                 "bat"
             );
 
+            // It's a treasure chest with a potion inside.
+            // USE this chest to get the potion out.
+			myZoneStart.AddItem(new TreasureChest()
+			    {
+				    Name = "Heavy Trunk",
+				    Description = "A very hefty looking wooden chest.  The lock appears to be open.",
+				    Contents = new Dictionary<string, ICarryableItem>()
+				    {
+					    { "potion", HealingPotion.StandardHealingPotion }
+				    }
+			    },
+                "heavy_trunk"
+            );
 
             // Using this SurpriseBox is ... very surprising............
             // Requires the USE command be implemented!
