@@ -6,6 +6,7 @@ namespace TheWorld
 	/// <summary>
 	/// A generic item in the world
 	/// </summary>
+    /// 
 	public class Item
 	{
         /// <summary>
