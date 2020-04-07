@@ -96,65 +96,6 @@ namespace TheWorld
         public void Use(ref object target) => Use();
     }
 
-    /// <summary>
-    /// A Prototype Healing Item that might come in Handy.
-    ///
-    /// Notice that this Extends the Item class, AND implements both
-    /// ICarryable and IUseableItem
-    ///
-    /// TODO:  Moderate Achievement
-    ///
-    /// Implement this Item in TheWorld
-    /// Requires:  Get command, Use command
-    ///
-    /// Place this item somewhere in the world, let the Player find it, and use it.
-    /// 
-    /// </summary>
-    public class HealingPotion : Item, ICarryableItem, IUseableItem
-    {
-        /// <summary>
-        /// How much does this thing weigh?
-        /// What does that even mean?
-        /// </summary>
-        public int Weight { get; set; }
-
-        public int UseCount { get; set; }
-
-        /// <summary>
-        /// How much does this potion Heal you by?
-        /// </summary>
-        public int HealValue { get; set; }
-
-        /// <summary>
-        /// Use this potion to heal yourself.
-        /// </summary>
-        public void Use()
-        {
-            TheGame.Player.Stats.HPs += HealValue;
-
-            if(--UseCount <= 0) // short hand, subtract one from UseCount and then compare.
-                throw new ItemDepletedException(string.Format("Your {0} has run out.", this.Name), this);
-        }
-
-
-        /// <summary>
-        /// Use this potion to heal a Creature.
-        /// </summary>
-        /// <param name="target">target must be of type Creature.</param>
-        public void Use(ref object target)
-        {
-            if(target is Creature)
-            {
-                Creature creature = (Creature)target;
-                creature.Stats.HPs += HealValue;
-                if (--UseCount <= 0)
-                    throw new ItemDepletedException(string.Format("Your {0} has run out.", this.Name), this);
-            }
-            else
-            {
-                throw new WorldException(string.Format("You can't use this item on {0}...", this.Name), target);
-            }
-        }
-    }
+   
 }
 
