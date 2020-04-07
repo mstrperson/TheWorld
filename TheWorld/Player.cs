@@ -78,14 +78,17 @@ namespace TheWorld
 		/// Put the Item in your backpack.
 		/// </summary>
 		/// <param name="item">Item.</param>
-		public void PickUp(ICarryableItem item)
+		public void PickUp(ICarryableItem item, string itemName = default)
 		{
+            if (string.IsNullOrEmpty(itemName))
+                itemName = item.Name.ToLowerInvariant().Replace(' ', '_');
+
             // if you already have some of this item, put it with those.
-			if(Backpack.ContainsKey(item.Name))
-				Backpack [item.Name].Add(item);
+			if(Backpack.ContainsKey(itemName))
+				Backpack [itemName].Add(item);
             // otherwise start a new stack
 			else
-				Backpack.Add(item.Name, new List<ICarryableItem>() { item });
+				Backpack.Add(itemName, new List<ICarryableItem>() { item });
 		}
 
         /// <summary>
@@ -96,7 +99,12 @@ namespace TheWorld
         /// <returns></returns>
         public string ListInventory()
         {
-			throw new NotImplementedException();
+            string output = "Backpack:";
+			foreach(string itemName in Backpack.Keys)
+            {
+                output = string.Format("{0}{1}\t({2}x) [{3}] ({4})", output, Environment.NewLine, Backpack[itemName].Count, itemName, Backpack[itemName][0]);
+            }
+            return output;
         }
 	}
 }

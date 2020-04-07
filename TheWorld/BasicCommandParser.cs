@@ -32,7 +32,7 @@ namespace TheWorld
 		/// </summary>
 		private static List<string> CommandWords = new List<string>()
 		{
-			"go", "look", "help", "quit", "examine", "fight"
+			"go", "look", "help", "quit", "examine", "fight", "use"
 		};
 
         /// <summary>
@@ -84,10 +84,174 @@ namespace TheWorld
             {
                 // TODO:  Implement this to show a new player how to use commands!
             }
+            else if (cmdWord.Equals("use"))
+            {
+				ProcessUseCommand(parts);
+            }
 
             // TODO: Many Achievements
             // Implement more commands like "use" and "get" and "talk"
 		}
+
+        private static void ProcessUseCommand(string[] parts)
+        {
+            if(parts.Length == 1)
+            {
+				PrintLineWarning("Use what?");
+				return;
+            }
+
+			string itemName = parts[1];
+
+
+            if(parts.Length == 2)
+            {
+                if(CurrentArea.HasItem(itemName))
+                {
+					Item item = CurrentArea.GetItem(itemName);
+                    if(item is IUseableItem)
+                    {
+						try
+						{
+
+							((IUseableItem)item).Use();
+						}
+                        catch (ItemDepletedException ide)
+                        {
+							PrintLineSpecial(ide.Message);
+							CurrentArea.DeleteItem(itemName);
+                        }
+                        catch(WorldException we)
+                        {
+							PrintLineDanger(we.Message);
+                        }
+                    }
+                    else
+                    {
+						PrintLineWarning("I can't use {0}...", item.Name);
+                    }
+                }
+
+                else if(Player.Backpack.ContainsKey(itemName))
+                {
+					
+					if (Player.Backpack[itemName].First() is IUseableItem)
+					{
+						try
+						{
+							((IUseableItem)Player.Backpack[itemName].First()).Use();
+						}
+						catch (ItemDepletedException ide)
+						{
+							PrintLineSpecial(ide.Message);
+							Player.Backpack[itemName].RemoveAt(0);
+                            if(Player.Backpack[itemName].Count <= 0)
+                            {
+								PrintLineWarning("You used your last {0}", itemName);
+								Player.Backpack.Remove(itemName);
+                            }
+						}
+						catch (WorldException we)
+						{
+							PrintLineDanger(we.Message);
+						}
+					}
+					else
+					{
+						PrintLineWarning("I can't use {0}...", Player.Backpack[itemName].First().Name);
+					}
+				}
+
+                else if(CurrentArea.CreatureExists(itemName))
+                {
+					PrintLineWarning("That is a living creature!");
+                }
+                else
+                {
+					PrintLineWarning("I don't see that around....");
+                }
+				return;
+            }
+			string targetName = parts[2];
+
+			object target;
+
+			if (CurrentArea.HasItem(targetName))
+				target = CurrentArea.GetItem(targetName);
+			else if (CurrentArea.CreatureExists(targetName))
+				target = CurrentArea.GetCreature(targetName);
+            else
+            {
+				PrintLineWarning("I don't see {0} around here...", targetName);
+				return;
+            }
+
+
+            if (CurrentArea.HasItem(itemName))
+			{
+				Item item = CurrentArea.GetItem(itemName);
+				if (item is IUseableItem)
+				{
+					try
+					{
+						((IUseableItem)item).Use(ref target);
+					}
+					catch (ItemDepletedException ide)
+					{
+						PrintLineSpecial(ide.Message);
+						CurrentArea.DeleteItem(itemName);
+					}
+					catch (WorldException we)
+					{
+						PrintLineDanger(we.Message);
+					}
+				}
+				else
+				{
+					PrintLineWarning("I can't use {0}...", item.Name);
+				}
+			}
+
+			else if (Player.Backpack.ContainsKey(itemName))
+			{
+
+				if (Player.Backpack[itemName].First() is IUseableItem)
+				{
+					try
+					{
+						((IUseableItem)Player.Backpack[itemName].First()).Use(ref target);
+					}
+					catch (ItemDepletedException ide)
+					{
+						PrintLineSpecial(ide.Message);
+						Player.Backpack[itemName].RemoveAt(0);
+						if (Player.Backpack[itemName].Count <= 0)
+						{
+							PrintLineWarning("You used your last {0}", itemName);
+							Player.Backpack.Remove(itemName);
+						}
+					}
+					catch (WorldException we)
+					{
+						PrintLineDanger(we.Message);
+					}
+				}
+				else
+				{
+					PrintLineWarning("I can't use {0}...", Player.Backpack[itemName].First().Name);
+				}
+			}
+
+			else if (CurrentArea.CreatureExists(itemName))
+			{
+				PrintLineWarning("That is a living creature!");
+			}
+			else
+			{
+				PrintLineWarning("I don't see that around....");
+			}
+			
+        }
 
 
         /// <summary>
@@ -193,8 +357,13 @@ namespace TheWorld
 				}
 				catch (WorldException e)
 				{
+                    if(parts[1].Equals("backpack"))
+                    {
+						PrintLine(Neutral, Player.ListInventory());
+                    }
+                    else
 					// otherwise, print an appropriate error message.
-					PrintLineDanger(e.Message);
+					    PrintLineDanger(e.Message);
 				}
 			}
 		}

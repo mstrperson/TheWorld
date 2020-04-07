@@ -187,6 +187,15 @@ namespace TheWorld
 			return Items [uid];
 		}
 
+        public void DeleteItem(string uid)
+        {
+			uid = uid.ToLowerInvariant();
+			if (!this.HasItem(uid))
+				return;
+
+			Items.Remove(uid);
+        }
+
         /// <summary>
         /// Literally: Does the Items dictionary contain the given string as a Key.
         /// </summary>
@@ -241,17 +250,17 @@ namespace TheWorld
             Creatures.Remove(uid);
         }
 
-        /// <summary>
-        /// TODO:  Easy Achievement
-        /// Implement this method to work the same way as HasItem and CanGo.
-        /// This method should return true if the Creatures dictionary contains
-        /// the given UID as a Key.
-        ///
-        /// Use this method appropriately in  AddCreature, GetCreature and RemoveCreature.
-        /// </summary>
-        /// <param name="uid"></param>
-        /// <returns></returns>
-		public bool CreatureExists(string uid) => throw new NotImplementedException();
+		/// <summary>
+		/// TODO:  Easy Achievement
+		/// Implement this method to work the same way as HasItem and CanGo.
+		/// This method should return true if the Creatures dictionary contains
+		/// the given UID as a Key.
+		///
+		/// Use this method appropriately in  AddCreature, GetCreature and RemoveCreature.
+		/// </summary>
+		/// <param name="uid"></param>
+		/// <returns></returns>
+		public bool CreatureExists(string uid) => Creatures.ContainsKey(uid);
 
         #endregion // Creatures
 
