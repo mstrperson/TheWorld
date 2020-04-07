@@ -18,7 +18,7 @@ namespace TheWorld
     /// Create an Area which is accessible by a one-way entrance.
     /// (i.e. You fall through a hole and must find another way out)
     ///
-    /// TODO:  Easy Achievement (4):
+    /// TODO:  Moderate Achievement (4):
     /// Draw a Map of your World on Paper or in a graphics program.
     /// Doesn't have to be crazy art work, just a visual representation of how
     /// the world is connected together.  Can be completely conceptual. 

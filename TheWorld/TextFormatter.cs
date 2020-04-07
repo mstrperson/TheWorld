@@ -47,7 +47,7 @@ namespace TheWorld
         /// <summary>
         /// Special messages in Blue
         /// </summary>
-        public static ConsoleColor Special = Console.BackgroundColor == ConsoleColor.White ? ConsoleColor.DarkBlue : ConsoleColor.Blue;
+        public static ConsoleColor Special = Console.BackgroundColor == ConsoleColor.White ? ConsoleColor.DarkCyan : ConsoleColor.Cyan;
 
         #endregion // Color Definitions
 
