@@ -11,6 +11,8 @@ namespace TheWorld
 		public static Area CurrentArea;
 		public static Player Player;
 
+       
+
         // TODO: Moderate Achievement
         //
         // Implement a property called PlayedTime which is of type TimeSpan
@@ -23,7 +25,8 @@ namespace TheWorld
 
 
 		public static void Main(string[] args)
-        { 
+        {
+
             // Initialization
 			PrintPositive("What is your name?  ");
 			Player = new Player(Console.ReadLine());
@@ -39,6 +42,19 @@ namespace TheWorld
                 Def = new Dice(Dice.Type.D4),  // 1d4
                 Exp = 0
 			};
+
+
+            Player.PickUp(new Bomb(new Dice(Dice.Type.D6))
+            {
+                Name = "Boom Stick",
+                Description = "A really boomy stick.", Value = new Money() { Silver = 24 }
+            });
+
+            Player.PickUp(new HealingPotion()
+            {
+                Name = "Red Potion",
+                Description = "A vial of murky red liquid.  I hope that isn't blood..."
+            });
 
             // Create the World from the WorldBuilder class.
 			CurrentArea = WorldBuilder.BuildWorld();
