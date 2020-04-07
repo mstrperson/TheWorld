@@ -96,6 +96,6 @@ namespace TheWorld
         public void Use(ref object target) => Use();
     }
 
-   
+
 }
 

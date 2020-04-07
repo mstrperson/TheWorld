@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TheWorld
 {
@@ -98,10 +99,73 @@ namespace TheWorld
 			// and no way out!!!
 			start.AddNeighbor(stream, "north");
 			stream.AddNeighbor(start, "south");
+			stream.AddNeighbor(SpecialZone(ref start, "cliff"), "climb_up");
 
 			// Go back to the Main method and tell it where to start the game!
 			return start;
 		}
+
+
+        /// <summary>
+        /// My contribution to the World for an Easy Achievement!
+        /// </summary>
+        /// <returns></returns>
+        public static Area SpecialZone(ref Area connectionPoint, string neighborName)
+        {
+			Area myZoneStart = new Area()
+			{
+				Name = "Danger Zone",
+				Description = "A zone of ... danger?"
+			};
+
+            // Added a Giant Bat enemy to this area.
+			myZoneStart.AddCreature(new Creature()
+			    {
+				    Name = "Bat-zilla",
+				    Description = "Pretty sure I'm going to die....",
+				    Stats = new StatChart()
+				    {
+					    Atk = new Dice("2d12+6"),
+					    Def = new Dice("2d8+3"),
+					    Exp = 150000,
+					    Level = 35,
+					    HPs = 400,
+					    MaxHPs = 400
+				    }
+			    },
+                "bat"
+            );
+
+            // It's a treasure chest with a potion inside.
+            // USE this chest to get the potion out.
+			myZoneStart.AddItem(new TreasureChest()
+			    {
+				    Name = "Heavy Trunk",
+				    Description = "A very hefty looking wooden chest.  The lock appears to be open.",
+				    Contents = new Dictionary<string, ICarryableItem>()
+				    {
+					    { "potion", HealingPotion.StandardHealingPotion }
+				    }
+			    },
+                "heavy_trunk"
+            );
+
+            // Using this SurpriseBox is ... very surprising............
+            // Requires the USE command be implemented!
+			myZoneStart.AddItem(new SurpriseBox()
+			    {
+				    Name = "Ornate Jewelry Box",
+				    Description = "An Ornate Silver-inlayed Walnut Jewelry box.  Should I open ('use') it?",
+				    Value = new Money("250g")
+			    },
+                "jewelry_box"
+            );
+
+			connectionPoint.AddNeighbor(myZoneStart, neighborName);
+
+			return myZoneStart;
+        }
+
 	}
 }
 

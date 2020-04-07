@@ -48,6 +48,7 @@
     <Compile Include="IUseableItem.cs" />
     <Compile Include="ITalkingCreature.cs" />
     <Compile Include="JC-Items.cs" />
+    <Compile Include="MySpecialItems.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

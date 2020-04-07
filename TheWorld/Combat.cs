@@ -130,7 +130,7 @@ namespace TheWorld
 
                     PrintLineDanger("{0} attacks you and deals {1} dammage!", creature.Name, dmg);
                 }
-                else
+                else // rolled a 20
                 {
                     int dmg = 2 * creature.Stats.CalculateAttack(Player.Stats);
                     if(playerDefending)
