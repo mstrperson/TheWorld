@@ -113,7 +113,7 @@ namespace TheWorld
                     {
 						try
 						{
-
+                            // "cast" as an IUseableItem
 							((IUseableItem)item).Use();
 						}
                         catch (ItemDepletedException ide)
