@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace TheWorld
 {
@@ -8,6 +9,7 @@ namespace TheWorld
 	public class Dice
 	{
 
+        private static Regex diceRegex = new Regex(@"^\d+[dD](2|4|6|8|10|12|20|100)(\+\d+)?$");
         /// <summary>
         /// The random number generator for the dice!
         /// </summary>
@@ -135,7 +137,20 @@ namespace TheWorld
         /// <param name="DnDFormat"></param>
         public Dice(string DnDFormat)
         {
-            throw new NotImplementedException();
+            if (!diceRegex.IsMatch(DnDFormat)) throw new ArgumentException("Invalid Dice string.");
+
+            if (DnDFormat.Contains("+"))
+            {
+                Modifier = Convert.ToInt32(DnDFormat.Split('+')[1]);
+                DnDFormat = DnDFormat.Split('+')[0];
+            }
+            else
+                Modifier = 0;
+
+            string[] parts = DnDFormat.Split('d');
+            Count = Convert.ToInt32(parts[0]);
+
+            DiceType = (Type)Convert.ToInt32(parts[1]);
         }
 
         /// <summary>
