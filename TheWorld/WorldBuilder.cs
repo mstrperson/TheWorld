@@ -95,6 +95,8 @@ namespace TheWorld
                 "frog"
             );
 
+			stream.AddCreature(Creature.L1Wolf, "wolf");
+
 			// These two lines LINK the two areas together.  Don't forget to go both ways or you'll end up with a dead end
 			// and no way out!!!
 			start.AddNeighbor(stream, "north");

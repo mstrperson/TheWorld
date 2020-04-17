@@ -6,7 +6,7 @@ namespace TheWorld
 	/// <summary>
 	/// A Creature that lives in the World.
 	/// </summary>
-	public class Creature
+	public partial class Creature
 	{
         /// <summary>
         /// Creature's name

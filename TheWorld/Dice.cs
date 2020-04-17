@@ -135,7 +135,7 @@ namespace TheWorld
         /// <param name="DnDFormat"></param>
         public Dice(string DnDFormat)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>

@@ -49,6 +49,7 @@
     <Compile Include="ITalkingCreature.cs" />
     <Compile Include="JC-Items.cs" />
     <Compile Include="MySpecialItems.cs" />
+    <Compile Include="JC-StaticCreatures.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

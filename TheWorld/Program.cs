@@ -43,6 +43,9 @@ namespace TheWorld
                 Exp = 0
 			};
 
+            Bomb otherBomb = new Bomb(new Dice(Dice.Type.D20));
+            otherBomb.Weight = 7;
+
 
             Player.PickUp(new Bomb(new Dice(Dice.Type.D6))
             {
