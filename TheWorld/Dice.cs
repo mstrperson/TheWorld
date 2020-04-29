@@ -74,10 +74,24 @@ namespace TheWorld
 
         #endregion
 
+        private Type _DiceType;
         /// <summary>
         /// Type of Dice(e.g. Coin, D6, D20 etc)
         /// </summary>
-        public Type DiceType { get; protected set; }
+        public Type DiceType
+        {
+            get => _DiceType;
+
+            protected set
+            {
+                if(!Enum.IsDefined(typeof(Dice.Type), value))
+                {
+                    throw new ArgumentException(string.Format("{0} is not a valid dice type...", value));
+                }
+
+                _DiceType = value;
+            }
+        }
 
         /// <summary>
         /// Number of Dice rolled.
