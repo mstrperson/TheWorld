@@ -22,6 +22,26 @@ namespace TheWorld
 
     }
 
+    public class Rope: Item, IUseableItem
+    {
+        private Area ClimbTo;
+
+        public Rope(Area climbTo)
+        {
+            ClimbTo = climbTo;
+        }
+
+        public void Use()
+        {
+            TextFormatter.PrintLineSpecial("You climb up the rope!");
+            TheGame.CurrentArea = ClimbTo;
+
+            ClimbTo.LoadArea();
+        }
+
+        public void Use(ref object target) => Use();
+    }
+
     /// <summary>
     /// Exception should be thrown when a UseableItem is depleted (if that is possible)
     /// This will allow you to be able to deal with the depleted item when it is done.

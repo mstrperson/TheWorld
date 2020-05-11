@@ -382,8 +382,13 @@ namespace TheWorld
 				// try to find the neighbor the user has indicated.
 				try
 				{
+					Area temp = CurrentArea;
+
 					// move to that area if the command is understood.
 					CurrentArea = CurrentArea.GetNeighbor(parts[1]);
+
+					temp.UnloadArea();
+					CurrentArea.LoadArea();
 				}
 				catch (WorldException e)
 				{

@@ -69,6 +69,23 @@ namespace TheWorld
                 "bunny"
             );
 
+			Area theWell = new Area()
+			{
+				Name = "Well",
+				Description = "A dry well that you probably fell in..."
+			};
+
+            theWell.OnEnter += TheWell_OnEnter;
+            theWell.OnExit += TheWell_OnExit;
+			theWell.AddItem(new Rope(start)
+            {
+                Description = "A rope with a bucket at the end..., it seems to be stuck at the top.",
+                Name = "Rope"
+            }, "rope");
+
+			theWell.AddNeighbor(start, "up");
+			start.AddNeighbor(theWell, "in_well");
+
 			// Here's a second area.
 			Area stream = new Area()
             {
@@ -104,6 +121,18 @@ namespace TheWorld
 			// Go back to the Main method and tell it where to start the game!
 			return start;
 		}
+
+        private static void TheWell_OnExit(object sender, EventArgs e)
+        {
+			TheGame.CurrentArea = (Area)sender;
+			TextFormatter.PrintLineDanger("You attempt to climb out of the well, but fall back down...");
+        }
+
+        private static void TheWell_OnEnter(object sender, EventArgs e)
+        {
+			TextFormatter.PrintLineSpecial("You tumble down into the well!");
+			TheGame.Player.Stats.HPs -= 5;
+        }
 
 
         /// <summary>

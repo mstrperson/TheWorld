@@ -10,6 +10,9 @@ namespace TheWorld
 	/// </summary>
 	public class Area
 	{
+		public event EventHandler OnEnter;
+		public event EventHandler OnExit;
+
 		/// <summary>
 		/// The neighboring areas, indexed by Keyword for travel.
 		/// </summary>
@@ -52,6 +55,16 @@ namespace TheWorld
 			Items = new Dictionary<string, Item>();
 			Creatures = new Dictionary<string, Creature>();
 		}
+
+        public void LoadArea()
+        {
+			OnEnter?.Invoke(this, null);
+        }
+
+		public void UnloadArea()
+        {
+			OnExit?.Invoke(this, null);
+        }
 
 		/// <summary>
 		/// Looks at thing.
