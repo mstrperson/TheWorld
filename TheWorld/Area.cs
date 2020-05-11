@@ -10,6 +10,10 @@ namespace TheWorld
 	/// </summary>
 	public class Area
 	{
+		public event EventHandler OnEnter;
+
+		public event EventHandler OnExit;
+
 		/// <summary>
 		/// The neighboring areas, indexed by Keyword for travel.
 		/// </summary>

@@ -382,6 +382,7 @@ namespace TheWorld
 				// try to find the neighbor the user has indicated.
 				try
 				{
+                    // Hold onto the Area you are leaving....
 					Area temp = CurrentArea;
 
 					// move to that area if the command is understood.
