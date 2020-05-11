@@ -50,7 +50,6 @@ namespace TheWorld
         /// <param name="displayString"></param>
         public Money(string displayString)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>

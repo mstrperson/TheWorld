@@ -382,8 +382,20 @@ namespace TheWorld
 				// try to find the neighbor the user has indicated.
 				try
 				{
+					Area temp = CurrentArea;
+
 					// move to that area if the command is understood.
 					CurrentArea = CurrentArea.GetNeighbor(parts[1]);
+
+                    if(temp is IActiveArea)
+                    {
+						((IActiveArea)temp).OnExit();
+                    }
+
+                    if(CurrentArea is IActiveArea)
+                    {
+						((IActiveArea)CurrentArea).OnEnter();
+                    }
 				}
 				catch (WorldException e)
 				{

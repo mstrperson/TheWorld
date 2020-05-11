@@ -69,6 +69,11 @@ namespace TheWorld
                 "bunny"
             );
 
+			PitTrap well = new PitTrap(start) { Description = "A dry well, it looks like you could climb in...", Name = "Well" };
+			start.AddNeighbor(well, "in_well");
+
+
+
 			// Here's a second area.
 			Area stream = new Area()
             {
