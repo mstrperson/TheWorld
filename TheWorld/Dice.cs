@@ -11,7 +11,7 @@ namespace TheWorld
         /// <summary>
         /// The random number generator for the dice!
         /// </summary>
-        private static Random GodPlaysDice = new Random();
+        private static Random _godPlaysDice = new Random();
 
         /// <summary>
         /// Type of Die to throw.
@@ -44,7 +44,7 @@ namespace TheWorld
 			int total = 0;
 			for(int i = 0; i < count; i++)
 			{
-				total += GodPlaysDice.Next((int)type) + 1;  // +1 because Dice don't have a zero.
+				total += _godPlaysDice.Next((int)type) + 1;  // +1 because Dice don't have a zero.
 			}
 			return total + modifier;
 		}
@@ -65,9 +65,9 @@ namespace TheWorld
         /// It all depends on how/if you want to use it~
         /// 
         /// </summary>
-        /// <param name="DnDFormat"></param>
+        /// <param name="dnDFormat"></param>
         /// <returns></returns>
-        public static int Roll(string DnDFormat)
+        public static int Roll(string dnDFormat)
         {
             throw new NotImplementedException();
         }
@@ -132,8 +132,8 @@ namespace TheWorld
         /// to determine if the given string is Valid in ONE LINE of code!
         /// 
         /// </summary>
-        /// <param name="DnDFormat"></param>
-        public Dice(string DnDFormat)
+        /// <param name="dnDFormat"></param>
+        public Dice(string dnDFormat)
         {
             throw new NotImplementedException();
         }

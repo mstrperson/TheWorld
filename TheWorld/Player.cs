@@ -13,7 +13,7 @@ namespace TheWorld
     ///
     /// 
 	/// </summary>
-	public class Player
+	public class Player : ICreature
 	{
         /// <summary>
         /// This player's name.
@@ -21,8 +21,10 @@ namespace TheWorld
 		public string Name
 		{
 			get;
-			protected set;
+			set;
 		}
+
+        public string Description { get; set; }
 
         /// <summary>
         /// This player's stats
@@ -57,13 +59,13 @@ namespace TheWorld
         /// void Remove(string uid)
         /// void Use(
 		/// </summary>
-		private Dictionary<string, List<ICarryableItem>> Backpack;
+		private Dictionary<string, List<ICarryableItem>> _backpack;
 
 
 		public Player(string name)
 		{
 			Name = name;
-			Backpack = new Dictionary<string, List<ICarryableItem>>();
+			_backpack = new Dictionary<string, List<ICarryableItem>>();
 		}
 
 		/// <summary>
@@ -73,11 +75,11 @@ namespace TheWorld
 		public void PickUp(ICarryableItem item)
 		{
             // if you already have some of this item, put it with those.
-			if(Backpack.ContainsKey(item.Name))
-				Backpack [item.Name].Add(item);
+			if(_backpack.ContainsKey(item.Name))
+				_backpack [item.Name].Add(item);
             // otherwise start a new stack
 			else
-				Backpack.Add(item.Name, new List<ICarryableItem>() { item });
+				_backpack.Add(item.Name, new List<ICarryableItem>() { item });
 		}
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace TheWorld
     /// might have important spaces in it!
     /// 
     /// </summary>
-    public interface ITalkingCreature
+    public interface ITalkingCreature : ICreature
     {
         /// <summary>
         /// Initiate or sustain dialog with this creature.

@@ -10,7 +10,7 @@ namespace TheWorld
         /// throw new ItemDepletedException("used up message", this);
         /// </summary>
         /// <param name="target"></param>
-        void Use(ref object target);
+        void Use(object target);
 
         /// <summary>
         /// Use this Item on Yourself.

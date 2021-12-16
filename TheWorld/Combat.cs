@@ -23,14 +23,14 @@ namespace TheWorld
         /// <summary>
         /// Commands usable in Combat.
         /// </summary>
-        private static List<string> CombatCommands = new List<string>() { "attack", "defend", "use", "run" };
+        private static List<string> _combatCommands = new List<string>() { "attack", "defend", "use", "run" };
 
         /// <summary>
         /// Compute a display message for the creature's health.
         /// Does this method belong here?
         /// </summary>
         /// <param name="creature">the Creature you're talking about.</param>
-        private static string hpMessage(Creature creature)
+        private static string HpMessage(ICreature creature)
         {
             float percentage =(float)creature.Stats.HPs /(float)creature.Stats.MaxHPs;
 
@@ -54,7 +54,7 @@ namespace TheWorld
         /// Enter combat with a particular creature.
         /// </summary>
         /// <param name="creature">the Creature you're fighting. passed by reference so that it can be modified.</param>
-        public static CombatResult DoCombat(ref Creature creature)
+        public static CombatResult DoCombat(ICreature creature)
         {
             // keep running until one of the exit conditions is met.
             // Run Away, Win or Lose.
@@ -68,11 +68,11 @@ namespace TheWorld
                 bool creatureDefending = creatureAction <= 4;
                 
                 Console.WriteLine("[{0} ({1} / {2})]", Player.Name, Player.Stats.HPs, Player.Stats.MaxHPs);
-                Console.Write("[{0} ({1})] << ", creature.Name, hpMessage(creature));
+                Console.Write("[{0} ({1})] << ", creature.Name, HpMessage(creature));
                 string command = Console.ReadLine();
                 string[] parts = command.Split(' ');
 
-                if(!CombatCommands.Contains(parts[0]))
+                if(!_combatCommands.Contains(parts[0]))
                 {
                     PrintLineWarning("That's not a valid combat command.");
                     continue;

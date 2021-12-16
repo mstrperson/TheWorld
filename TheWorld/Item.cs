@@ -36,6 +36,42 @@ namespace TheWorld
 		}
 	}
 
+    public class InteractableItem : Item, IInteractable
+    {
+        public Dictionary<string, Action<string[]>> Interactions { get; protected set; }
+    }
+
+    public class Boulder : InteractableItem
+    {
+        public Boulder()
+        {
+            Interactions = new Dictionary<string, Action<string[]>>()
+            {
+                {
+                    "touch", (parts) =>
+                    {
+                        TheGame.CurrentArea.AddCreature(
+                            new Creature()
+                            {
+                                Name = "Giant Moth",
+                                Description = "Really really big Moth",
+                                Stats = new StatChart()
+                                {
+                                    Atk = new Dice(Dice.Type.D4, 2, 2),
+                                    Def= new Dice(Dice.Type.D4),
+                                    Exp = 30,
+                                    MaxHPs = 10,
+                                    HPs = 10,
+                                    Level=2
+                                }
+                            }, "moth");
+                        TheGame.SurpriseFight("moth");
+                    }
+                }
+            };
+        }
+    }
+    
     // TODO: Moderate Achievement
     // Build a "Book" class which is an Item that is both Carryable and Useable.
     // The Use method should print a short bit of text which is the "Story" or 
@@ -52,16 +88,16 @@ namespace TheWorld
     /// </summary>
     public class SurpriseBox : Item, IUseableItem
     {
-        private bool UsedOnce;
+        private bool _usedOnce;
 
         public SurpriseBox()
         {
-            UsedOnce = false;
+            _usedOnce = false;
         }
 
         public void Use()
         {
-            if (!UsedOnce)
+            if (!_usedOnce)
             {
                 TheGame.CurrentArea.AddCreature(new Creature()
                 {
@@ -80,7 +116,7 @@ namespace TheWorld
                     "giant_dragonfly"
                 );
 
-                UsedOnce = true;
+                _usedOnce = true;
 
                 TextFormatter.PrintLineSpecial("A Giant Dragonfly crawls out of the box.{0}You notice in the back of your mind that the box seems way too small to have contained this thing.... (press Enter to coninue)");
                 Console.ReadLine();
@@ -93,7 +129,7 @@ namespace TheWorld
         /// It's a surprise!  It doesn't matter if you use it /on/ something or not.
         /// </summary>
         /// <param name="target"></param>
-        public void Use(ref object target) => Use();
+        public void Use(object target) => Use();
     }
 
     /// <summary>
@@ -141,11 +177,11 @@ namespace TheWorld
         /// Use this potion to heal a Creature.
         /// </summary>
         /// <param name="target">target must be of type Creature.</param>
-        public void Use(ref object target)
+        public void Use(object target)
         {
-            if(target is Creature)
+            if(target is ICreature)
             {
-                Creature creature = (Creature)target;
+                ICreature creature = (ICreature)target;
                 creature.Stats.HPs += HealValue;
                 if (--UseCount <= 0)
                     throw new ItemDepletedException(string.Format("Your {0} has run out.", this.Name), this);

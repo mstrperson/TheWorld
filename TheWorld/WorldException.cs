@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,9 @@ namespace TheWorld
         /// <summary>
         /// What object had this exception
         /// </summary>
-        public object Sender { get; protected set; }
+        public object Sender { get; }
+        
+        public Type SenderType { get; }
 
 
         /// <summary>
@@ -27,10 +30,11 @@ namespace TheWorld
         /// <param name="message"></param>
         /// <param name="sender"></param>
         /// <param name="innerException"></param>
-        public WorldException(string message, object sender = null, Exception innerException = null)
+        public WorldException(string message, object sender = null, Type senderType = null, Exception innerException = null)
             : base(message, innerException)
         {
             Sender = sender;
+            SenderType = senderType;
         }
     }
 }

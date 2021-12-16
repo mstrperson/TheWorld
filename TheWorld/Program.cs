@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 // this allows me to use the static methods defined in TextFormatter without typing "TextFormatter." every time.
 using static TheWorld.TextFormatter;
@@ -64,7 +65,7 @@ namespace TheWorld
 				command = Console.ReadLine();
 
                 // This command.ToLowerInvariant() is why all names for things must be in all lowercase.
-				ParseCommand(command.ToLowerInvariant());
+                ParseCommand(command.ToLowerInvariant());
 
                 // TODO: You can spice up the game by having things happen randomly
                 // Add things here to insert them in between the users commands.
