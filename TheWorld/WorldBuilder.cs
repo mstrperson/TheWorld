@@ -41,7 +41,7 @@ namespace TheWorld
 			Area start = new Area() { Name = "The Field", Description = "A wide grassy field with not much to see." };
 
 			// I can create a new Item and add it directly into the Area without having a separate variable for it!  Convenient!
-			start.AddItem(new Item()
+			start.AddItem(new Boulder()
                 {
 				    Name = "Boulder",
 				    Description = "It's a big granite boulder.  It has a weird glyph carved into it, but you can't make any sense of it."

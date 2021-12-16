@@ -66,7 +66,7 @@ namespace TheWorld
 
             if(Platinum > 0)
             {
-                output += string.Format("{0}P", Platinum);
+                output += $"{Platinum}P";
                 addSpace = true;
             }
             if(Gold > 0)

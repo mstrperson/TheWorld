@@ -13,7 +13,7 @@ namespace TheWorld
     ///
     /// 
 	/// </summary>
-	public class Player
+	public class Player : ICreature
 	{
         /// <summary>
         /// This player's name.
@@ -21,8 +21,10 @@ namespace TheWorld
 		public string Name
 		{
 			get;
-			protected set;
+			set;
 		}
+
+        public string Description { get; set; }
 
         /// <summary>
         /// This player's stats
@@ -44,7 +46,7 @@ namespace TheWorld
 
 		/// <summary>
 		/// The items. In Stacks.  By Name.
-        /// _______________________________________
+        ///
         /// TODO: Hard Achievement
         /// Encapsulate this Backpack into a Specialized container class.
         /// The Backpack class should include additional properties such as:
@@ -55,40 +57,29 @@ namespace TheWorld
         ///
         /// void Add(ICarryable item, string uid)
         /// void Remove(string uid)
-        ///
-        /// _______________________________________
-        /// TODO: Hard Achievement (2)
-        /// Add to the Backpack class
-        ///
-        /// void Use(string uid)
-        ///
-        /// such that, only usable items which are in the backpack can be used directly from the backpack.
-        /// don't forget to handle events like ItemDepletedException.
+        /// void Use(
 		/// </summary>
-		public Dictionary<string, List<ICarryableItem>> Backpack;
+		private Dictionary<string, List<ICarryableItem>> _backpack;
 
 
 		public Player(string name)
 		{
 			Name = name;
-			Backpack = new Dictionary<string, List<ICarryableItem>>();
+			_backpack = new Dictionary<string, List<ICarryableItem>>();
 		}
 
 		/// <summary>
 		/// Put the Item in your backpack.
 		/// </summary>
 		/// <param name="item">Item.</param>
-		public void PickUp(ICarryableItem item, string itemName = default)
+		public void PickUp(ICarryableItem item)
 		{
-            if (string.IsNullOrEmpty(itemName))
-                itemName = item.Name.ToLowerInvariant().Replace(' ', '_');
-
             // if you already have some of this item, put it with those.
-			if(Backpack.ContainsKey(itemName))
-				Backpack [itemName].Add(item);
+			if(_backpack.ContainsKey(item.Name))
+				_backpack [item.Name].Add(item);
             // otherwise start a new stack
 			else
-				Backpack.Add(itemName, new List<ICarryableItem>() { item });
+				_backpack.Add(item.Name, new List<ICarryableItem>() { item });
 		}
 
         /// <summary>
@@ -99,12 +90,7 @@ namespace TheWorld
         /// <returns></returns>
         public string ListInventory()
         {
-            string output = "Backpack:";
-			foreach(string itemName in Backpack.Keys)
-            {
-                output = string.Format("{0}{1}\t({2}x) [{3}] ({4})", output, Environment.NewLine, Backpack[itemName].Count, itemName, Backpack[itemName][0]);
-            }
-            return output;
+			throw new NotImplementedException();
         }
 	}
 }

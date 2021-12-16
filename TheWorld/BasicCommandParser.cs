@@ -8,33 +8,40 @@ namespace TheWorld
 	using static TheWorld.TextFormatter;
 
 
-    /// <summary>
-    /// You might notice that this class has the same name as the one in
-    /// Program.cs as well as in Combat.cs
-    ///
-    /// This is allowed because the class has the "partial" attribute.  This
-    /// means that the class has parts spread across multiple files because
-    /// it is large and breaking it up into chunks makes it easier to follow.
-    ///
-    /// This file contains the methods and properties that are only relevant to
-    /// processing game commands.
-    ///
-    /// The fact is, the entire game is really made up of just a bunch of calls
-    /// to the ParseCommand method.  At least until you spice things up a bit!
-    /// </summary>
-    public static partial class TheGame
-    {
-
+	/// <summary>
+	/// You might notice that this class has the same name as the one in
+	/// Program.cs as well as in Combat.cs
+	///
+	/// This is allowed because the class has the "partial" attribute.  This
+	/// means that the class has parts spread across multiple files because
+	/// it is large and breaking it up into chunks makes it easier to follow.
+	///
+	/// This file contains the methods and properties that are only relevant to
+	/// processing game commands.
+	///
+	/// The fact is, the entire game is really made up of just a bunch of calls
+	/// to the ParseCommand method.  At least until you spice things up a bit!
+	/// </summary>
+	public static partial class TheGame
+	{
 		/// <summary>
 		/// The command words.
 		/// These are all the words that the game will accept as commands.
 		/// You will need to add more words to make the game more interesting!
+		/// Pair these with the Methods to execute when you type this command word!
 		/// </summary>
-		private static List<string> CommandWords = new List<string>()
+		private static Dictionary<string, Action<string[]>> _commands = new Dictionary<string, Action<string[]>>()
 		{
-			"go", "look", "help", "quit", "examine", "fight", "use"
+			{ "go", ProcessGoCommand },
+			{ "look", ProcessLookCommand },
+			{ "help", ProcessHelpCommand },
+			{ "quit", delegate(string[] strings) {  }},
+			{ "examine", delegate(string[] strings) {  } },
+			{ "fight", ProcessFightCommand }
 		};
-
+	    
+		
+		
         /// <summary>
         /// TODO:  Easy Achievement
         /// Improve the readability of other code by completing this method.
@@ -62,196 +69,40 @@ namespace TheWorld
 			string cmdWord = parts.First();
 
 
-			if (!CommandWords.Contains(cmdWord))
+			if (!_commands.ContainsKey(cmdWord))
 			{
+				if (parts.Length > 1)
+				{
+					string target = parts[1];
+					if (CurrentArea.HasItem(target))
+					{
+						Item item = CurrentArea.GetItem(target);
+						if (item is IInteractable && ((IInteractable)item).Interactions.ContainsKey(cmdWord))
+						{
+							((IInteractable) item).Interactions[cmdWord](parts);
+							return;
+						}
+					}
+					else if (CurrentArea.CreatureExists(target))
+					{
+						Creature creature = CurrentArea.GetCreature(target);
+						if (creature is IInteractable && ((IInteractable)creature).Interactions.ContainsKey(cmdWord))
+						{
+							((IInteractable) creature).Interactions[cmdWord](parts);
+							return;
+						}
+					}
+				}
 				PrintLineWarning("I don't understand...(type \"help\" to see a list of commands I know.)");
 				return;
 			}
 
-			if (cmdWord.Equals("look"))
-			{
-				ProcessLookCommand(parts);
-			}
-			else if (cmdWord.Equals("go"))
-			{
-				ProcessGoCommand(parts);
-			}
-			else if (cmdWord.Equals("fight"))
-			{
-				ProcessFightCommand(parts);
-			}
-            else if (cmdWord.Equals("help"))
-            {
-                // TODO:  Implement this to show a new player how to use commands!
-            }
-            else if (cmdWord.Equals("use"))
-            {
-				ProcessUseCommand(parts);
-            }
+			// execute the command associated with the given command word!
+			_commands[cmdWord](parts);
 
-            // TODO: Many Achievements
-            // Implement more commands like "use" and "get" and "talk"
+			// TODO: Many Achievements
+			// Implement more commands like "use" and "get" and "talk"
 		}
-
-        private static void ProcessUseCommand(string[] parts)
-        {
-            if(parts.Length == 1)
-            {
-				PrintLineWarning("Use what?");
-				return;
-            }
-
-			string itemName = parts[1];
-
-
-            if(parts.Length == 2)
-            {
-                if(CurrentArea.HasItem(itemName))
-                {
-					Item item = CurrentArea.GetItem(itemName);
-                    if(item is IUseableItem)
-                    {
-						try
-						{
-                            // "cast" as an IUseableItem
-							((IUseableItem)item).Use();
-						}
-                        catch (ItemDepletedException ide)
-                        {
-							PrintLineSpecial(ide.Message);
-							CurrentArea.DeleteItem(itemName);
-                        }
-                        catch(WorldException we)
-                        {
-							PrintLineDanger(we.Message);
-                        }
-                    }
-                    else
-                    {
-						PrintLineWarning("I can't use {0}...", item.Name);
-                    }
-                }
-
-                else if(Player.Backpack.ContainsKey(itemName))
-                {
-					
-					if (Player.Backpack[itemName].First() is IUseableItem)
-					{
-						try
-						{
-							((IUseableItem)Player.Backpack[itemName].First()).Use();
-						}
-						catch (ItemDepletedException ide)
-						{
-							PrintLineSpecial(ide.Message);
-							Player.Backpack[itemName].RemoveAt(0);
-                            if(Player.Backpack[itemName].Count <= 0)
-                            {
-								PrintLineWarning("You used your last {0}", itemName);
-								Player.Backpack.Remove(itemName);
-                            }
-						}
-						catch (WorldException we)
-						{
-							PrintLineDanger(we.Message);
-						}
-					}
-					else
-					{
-						PrintLineWarning("I can't use {0}...", Player.Backpack[itemName].First().Name);
-					}
-				}
-
-                else if(CurrentArea.CreatureExists(itemName))
-                {
-					PrintLineWarning("That is a living creature!");
-                }
-                else
-                {
-					PrintLineWarning("I don't see that around....");
-                }
-				return;
-            }
-			string targetName = parts[2];
-
-			object target;
-
-			if (CurrentArea.HasItem(targetName))
-				target = CurrentArea.GetItem(targetName);
-			else if (CurrentArea.CreatureExists(targetName))
-				target = CurrentArea.GetCreature(targetName);
-            else
-            {
-				PrintLineWarning("I don't see {0} around here...", targetName);
-				return;
-            }
-
-
-            if (CurrentArea.HasItem(itemName))
-			{
-				Item item = CurrentArea.GetItem(itemName);
-				if (item is IUseableItem)
-				{
-					try
-					{
-						((IUseableItem)item).Use(ref target);
-					}
-					catch (ItemDepletedException ide)
-					{
-						PrintLineSpecial(ide.Message);
-						CurrentArea.DeleteItem(itemName);
-					}
-					catch (WorldException we)
-					{
-						PrintLineDanger(we.Message);
-					}
-				}
-				else
-				{
-					PrintLineWarning("I can't use {0}...", item.Name);
-				}
-			}
-
-			else if (Player.Backpack.ContainsKey(itemName))
-			{
-
-				if (Player.Backpack[itemName].First() is IUseableItem)
-				{
-					try
-					{
-						((IUseableItem)Player.Backpack[itemName].First()).Use(ref target);
-					}
-					catch (ItemDepletedException ide)
-					{
-						PrintLineSpecial(ide.Message);
-						Player.Backpack[itemName].RemoveAt(0);
-						if (Player.Backpack[itemName].Count <= 0)
-						{
-							PrintLineWarning("You used your last {0}", itemName);
-							Player.Backpack.Remove(itemName);
-						}
-					}
-					catch (WorldException we)
-					{
-						PrintLineDanger(we.Message);
-					}
-				}
-				else
-				{
-					PrintLineWarning("I can't use {0}...", Player.Backpack[itemName].First().Name);
-				}
-			}
-
-			else if (CurrentArea.CreatureExists(itemName))
-			{
-				PrintLineWarning("That is a living creature!");
-			}
-			else
-			{
-				PrintLineWarning("I don't see that around....");
-			}
-			
-        }
 
 
         /// <summary>
@@ -306,7 +157,7 @@ namespace TheWorld
 
 			// This method is part of the MainClass but is defined in a different file.
 			// Check out the Combat.cs file.
-			CombatResult result = DoCombat(ref creature);
+			CombatResult result = DoCombat(creature);
 
 			switch (result)
 			{
@@ -357,13 +208,8 @@ namespace TheWorld
 				}
 				catch (WorldException e)
 				{
-                    if(parts[1].Equals("backpack"))
-                    {
-						PrintLine(Neutral, Player.ListInventory());
-                    }
-                    else
 					// otherwise, print an appropriate error message.
-					    PrintLineDanger(e.Message);
+					PrintLineDanger(e.Message);
 				}
 			}
 		}

@@ -62,15 +62,15 @@ namespace TheWorld
 		{
 			if(Items.ContainsKey(thing))
 			{
-				return string.Format("{0} - {1}", Items [thing].Name, Items [thing].Description);
+				return string.Format($"{Items[thing].Name} - {Items[thing].Description}");
 			}
             else if(Creatures.ContainsKey(thing))
 			{
-				return string.Format("{0} - {1}", Creatures [thing].Name, Creatures [thing].Description);
+				return string.Format($"{Creatures[thing].Name} - {Creatures[thing].Description}");
 			}
             else if(NeighboringAreas.ContainsKey(thing))
 			{
-				return NeighboringAreas [thing].Name;
+				return NeighboringAreas[thing].Name;
 			}
 				
 			throw new WorldException("I don't see anything like that...");
@@ -82,24 +82,21 @@ namespace TheWorld
 		/// <returns>The around.</returns>
 		public string LookAround()
 		{
-			string longDescription = this.ToString() + Environment.NewLine;
+			string longDescription = $"{this}" + Environment.NewLine;
 
             foreach (string key in Items.Keys)
 			{
-				longDescription += string.Format("There is a [{0}]. {1}", key, Environment.NewLine);
+				longDescription += $"There is a [{key}].{Environment.NewLine}";
 			}
 
 			foreach(string key in Creatures.Keys)
 			{
-				longDescription += string.Format("You see a [{0}]. {1}", key, Environment.NewLine);
+				longDescription += $"You see a [{key}]. {Environment.NewLine}";
 			}
 
 			foreach(string keyword in NeighboringAreas.Keys)
 			{
-				longDescription += string.Format("If you go [{0}] there is a {1}.{2}",
-				                                  keyword,
-				                                  NeighboringAreas [keyword].Name,
-				                                  Environment.NewLine);
+				longDescription += $"If you go [{keyword}] there is a {NeighboringAreas[keyword].Name}.{Environment.NewLine}";
 			}
 
 			return longDescription;
@@ -109,7 +106,7 @@ namespace TheWorld
 		/// Returns a string that represents the current object.
 		/// </summary>
 		/// <returns>A string that represents the current object.</returns>
-		public override string ToString() => string.Format("{0}{1}{2}", Name, Environment.NewLine, Description);
+		public override string ToString() => $"{Name}{Environment.NewLine}{Description}";
 
         #region Neighbors
         /// <summary>
